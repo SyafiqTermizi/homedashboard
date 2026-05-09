@@ -1,27 +1,17 @@
 from collections import defaultdict
 import csv
 from datetime import datetime
-from enum import Enum
 import io
 import logging
 import zipfile
 
+from .constant import BASE_URL, Direction, Service
+
 import requests
+from requests.exceptions import HTTPError
+
 
 logger = logging.getLogger(__name__)
-BASE_URL = "https://api.data.gov.my/gtfs-static/ktmb"
-
-ROUTE_SNAME = "Seremban Line"
-
-
-class Direction(Enum):
-    NORTHBOUND = "1"
-    SOUTHBOUND = "0"
-
-
-class Service(Enum):
-    WEEKEND = "komuter_weekend"
-    WEEKDAY = "komuter_weekday"
 
 
 class KTMBData:
@@ -32,10 +22,28 @@ class KTMBData:
         """
         Read response zip file for given file name
         """
-        response = requests.get(BASE_URL)
+        try:
+            response = requests.get(BASE_URL)
+            response.raise_for_status()
+        except HTTPError:
+            logger.exception(
+                {
+                    "msg": "Fail to retrieve zip file",
+                    "url": BASE_URL,
+                    "response": response.text,
+                    "status_code": response.status_code
+                }
+            )
 
         data = {}
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_file:
+            logger.info(
+                {
+                    "msg": "Extracted zip file",
+                    "file_names": zip_file.namelist()
+                }
+            )
+
             for fn in ["routes.txt", "stops.txt", "stop_times.txt", "trips.txt"]:
                 with zip_file.open(fn, "r") as csv_file:
                     # the var csv_file is of ZipExtFile type. We cast it into
@@ -45,7 +53,7 @@ class KTMBData:
 
         return data
 
-    def get_service_id(self):
+    def get_service_id(self) -> Service:
         """
         Get KTMB service ID
         """
@@ -66,13 +74,11 @@ class KTMBData:
             )
         except KeyError:
             logger.exception({"msg": "Fail extracting data from routes"})
-            return
 
         try:
             route_id = list(d)[0]["route_id"]
         except IndexError:
             logger.exception({"msg": "Can't find routes from routes"})
-            return
 
         return route_id
 
@@ -85,7 +91,8 @@ class KTMBData:
         return {
             s["stop_id"]: s["stop_name"]
             for s in filter(
-                lambda s: s["stop_name"].lower() in station_names, stop_data
+                lambda s: s["stop_name"].lower() in station_names,
+                stop_data
             )
         }
 
@@ -98,9 +105,6 @@ class KTMBData:
 
         # 0. Get route id
         route_id = self.get_route_id(self.api_data["routes"], route_sname)
-
-        if not route_id:
-            return
 
         # 1. Get stop id from stop name
         stop_ids = self.get_stop_id(self.api_data["stops"], stations)
@@ -140,21 +144,3 @@ class KTMBData:
             )
 
         return out
-
-
-if __name__ == "__main__":
-    get_stop_data = KTMBData()
-    o = get_stop_data(
-        route_sname=ROUTE_SNAME,
-        stations=["bangi", "kajang"],
-        direction=Direction.NORTHBOUND.value,
-    )
-
-    o = get_stop_data(
-        route_sname=ROUTE_SNAME,
-        stations=["midvalley"],
-        direction=Direction.SOUTHBOUND.value,
-    )
-
-    print(o)
-    print(o)
