@@ -1,9 +1,14 @@
 from datetime import datetime
-import json
+import logging
 
 import requests
+from requests.exceptions import HTTPError
 
 BASE_URL = "https://api.data.gov.my/weather/forecast"
+
+
+logger = logging.getLogger(__name__)
+
 
 class TodayWeather:
     """
@@ -25,7 +30,20 @@ class TodayWeather:
         Get today's weather for all location.
         """
         url = f"{self.base_url}?contains={self.get_today_date_filter()}"
-        response = requests.get(url=url)
+        
+        try:
+            response = requests.get(url=url)
+            response.raise_for_status()
+        except HTTPError:
+            logger.exception(
+                {
+                    "msg": "Fail to retrieve data",
+                    "url": self.base_url,
+                    "response": response.text,
+                    "status_code": response.status_code
+                }
+            )
+
         return response.json()
 
     def __call__(self):
@@ -39,11 +57,3 @@ class TodayWeather:
                 data
             )
         )
-
-def main():
-    get_today_weather = TodayWeather(locations=["baNgi", "kajang", "nilai"])
-    return get_today_weather()
-
-
-if __name__ == "__main__":
-    print(json.dumps(main(), indent=2))
