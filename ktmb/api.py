@@ -103,6 +103,9 @@ class KTMBData:
         direction: Direction,
     ) -> dict[str, list]:
 
+        """
+        Get today's train arrival time for given stations and direction
+        """
         # 0. Get route id
         route_id = self.get_route_id(self.api_data["routes"], route_sname)
 

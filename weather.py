@@ -14,8 +14,6 @@ class TodayWeather:
     """
     Get today's weather for given locations
     """
-
-    base_url = "https://api.data.gov.my/weather/forecast"
     date_format = "%Y-%m-%d"
 
     def __init__(self, locations: list[str]):
@@ -29,7 +27,7 @@ class TodayWeather:
         """
         Get today's weather for all location.
         """
-        url = f"{self.base_url}?contains={self.get_today_date_filter()}"
+        url = f"{BASE_URL}?contains={self.get_today_date_filter()}"
         
         try:
             response = requests.get(url=url)
@@ -38,7 +36,7 @@ class TodayWeather:
             logger.exception(
                 {
                     "msg": "Fail to retrieve data",
-                    "url": self.base_url,
+                    "url": BASE_URL,
                     "response": response.text,
                     "status_code": response.status_code
                 }
