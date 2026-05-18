@@ -9,18 +9,15 @@ BASE_URL = "https://api.data.gov.my/weather/forecast"
 
 logger = logging.getLogger(__name__)
 
+DATE_FORMAT = "%Y-%m-%d"
 
 class TodayWeather:
     """
     Get today's weather for given locations
     """
-    date_format = "%Y-%m-%d"
-
-    def __init__(self, locations: list[str]):
-        self.locations = locations
 
     def get_today_date_filter(self) -> str:
-        today = datetime.now().strftime(self.date_format)
+        today = datetime.now().strftime(DATE_FORMAT)
         return f"{today}@date"
 
     def get_today_weather(self) -> list:
@@ -44,9 +41,9 @@ class TodayWeather:
 
         return response.json()
 
-    def __call__(self):
+    def __call__(self, locations: list[str]):
         data = self.get_today_weather()
-        _locations = list(map(lambda l: l.lower(), self.locations))
+        _locations = list(map(lambda l: l.lower(), locations))
 
         # The API only allow one filter at a time. So we are handling filtering of here.
         return list(
