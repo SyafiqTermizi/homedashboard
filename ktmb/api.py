@@ -5,7 +5,7 @@ import io
 import logging
 import zipfile
 
-from .constant import BASE_URL, Direction, Service
+from .constants import BASE_URL, Direction, Service
 
 import requests
 from requests.exceptions import HTTPError
