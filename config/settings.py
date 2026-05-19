@@ -24,13 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ["DJANGO_DEBUG"].lower() == "true"
 
 ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "dashboard.apps.DashboardConfig",
     "django.contrib.staticfiles",
@@ -64,7 +63,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Asia/Kuala_Lumpur"
@@ -87,6 +85,9 @@ CACHES = {
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
 # Celery Configuration
 _API_TASK_FREQUENCY = 30 * 60  # Every 30 minutes

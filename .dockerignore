@@ -1,0 +1,31 @@
+# Python bytecode
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local development files
+.env
+db.sqlite3
+.git/
+.gitignore
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Static and Media (usually handled via volumes or cloud storage)
+media/
+
+# IDE and OS specific files
+.idea/
+.vscode/
+.DS_Store
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+node_modules

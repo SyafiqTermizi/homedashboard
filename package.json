@@ -1,0 +1,25 @@
+{
+  "name": "homedashboard",
+  "version": "1.0.0",
+  "description": "1. Get weather forecast 2. Get KTM schedule",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SyafiqTermizi/homedashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SyafiqTermizi/homedashboard/issues"
+  },
+  "homepage": "https://github.com/SyafiqTermizi/homedashboard#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "sass": "^1.99.0"
+  }
+}
