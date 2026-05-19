@@ -20,5 +20,5 @@ def get_weather_summary(data):
     out = {}
     for k, v in forecast_counter.items():
         out[k] = max(v, key=v.get)
-    
+
     return out

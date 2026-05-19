@@ -11,18 +11,14 @@ logger = logging.getLogger(__name__)
 BASE_URL = "https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat"
 DATE_FORMAT = "%d-%b-%Y"
 
+
 def get_prayer_time(location: Location):
     """
     Get prayer time from JAKIM
     """
     url = f"{BASE_URL}&period={Frequency.WEEK.value}&zone={location.value}"
 
-    logger.info(
-        {
-            "msg": "Retrieving data from JAKIM",
-            "url": url
-        }
-    )
+    logger.info({"msg": "Retrieving data from JAKIM", "url": url})
 
     response = requests.get(url)
 
@@ -34,7 +30,7 @@ def get_prayer_time(location: Location):
                 "msg": "Failed retrieving data from JAKIM",
                 "url": url,
                 "response": response.text,
-                "status_code": response.status_code
+                "status_code": response.status_code,
             }
         )
 

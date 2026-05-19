@@ -10,7 +10,6 @@ from .constants import BASE_URL, Direction, Service
 import requests
 from requests.exceptions import HTTPError
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -31,17 +30,14 @@ class KTMBData:
                     "msg": "Fail to retrieve zip file",
                     "url": BASE_URL,
                     "response": response.text,
-                    "status_code": response.status_code
+                    "status_code": response.status_code,
                 }
             )
 
         data = {}
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_file:
             logger.info(
-                {
-                    "msg": "Extracted zip file",
-                    "file_names": zip_file.namelist()
-                }
+                {"msg": "Extracted zip file", "file_names": zip_file.namelist()}
             )
 
             for fn in ["routes.txt", "stops.txt", "stop_times.txt", "trips.txt"]:
@@ -91,8 +87,7 @@ class KTMBData:
         return {
             s["stop_id"]: s["stop_name"]
             for s in filter(
-                lambda s: s["stop_name"].lower() in station_names,
-                stop_data
+                lambda s: s["stop_name"].lower() in station_names, stop_data
             )
         }
 
@@ -102,7 +97,6 @@ class KTMBData:
         stations: list[str],
         direction: Direction,
     ) -> dict[str, list]:
-
         """
         Get today's train arrival time for given stations and direction
         """

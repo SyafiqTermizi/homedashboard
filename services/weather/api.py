@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 DATE_FORMAT = "%Y-%m-%d"
 
+
 class TodayWeather:
     """
     Get today's weather for given locations
@@ -25,7 +26,7 @@ class TodayWeather:
         Get today's weather for all location.
         """
         url = f"{BASE_URL}?contains={self.get_today_date_filter()}"
-        
+
         try:
             response = requests.get(url=url)
             response.raise_for_status()
@@ -35,7 +36,7 @@ class TodayWeather:
                     "msg": "Fail to retrieve data",
                     "url": BASE_URL,
                     "response": response.text,
-                    "status_code": response.status_code
+                    "status_code": response.status_code,
                 }
             )
 
@@ -47,8 +48,5 @@ class TodayWeather:
 
         # The API only allow one filter at a time. So we are handling filtering of here.
         return list(
-            filter(
-                lambda d: d["location"]["location_name"].lower() in _locations,
-                data
-            )
+            filter(lambda d: d["location"]["location_name"].lower() in _locations, data)
         )
