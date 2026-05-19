@@ -78,3 +78,31 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# Celery Configuration
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BEAT_SCHEDULE = {
+    "weather_forecast": {
+        "task": "services.tasks.get_weather_forecast",
+        "schedule": 60.0,
+        "args": (["bangi", "kajang", "nilai"],),
+    },
+    "train_arrival": {
+        "task": "services.tasks.get_train_time",
+        "schedule": 60.0,
+        "args": (
+            {
+                "route_sname": "Seremban Line",
+                "stations": ["bangi", "kajang"],
+                "direction": "1",
+            },
+        ),
+    },
+    "prayer_time": {
+        "task": "services.tasks.get_prayer_time",
+        "schedule": 60.0,
+        "args": ("WLY01",),
+    },
+}
+CELERY_IMPORTS = ("services.tasks",)

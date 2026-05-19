@@ -1,5 +1,9 @@
 services:
-  web_be:
+  redis:
+    container_name: redis
+    image: redis:8.8-m03-alpine3.23
+
+  web_be: &base_py
     container_name: web_be
     build:
       context: ../
@@ -11,3 +15,23 @@ services:
       - ../.env
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+
+  periodic_task:
+    <<: *base_py
+    image: periodic_task
+    container_name: periodic_task
+    depends_on:
+      - redis
+    ports: []
+    command: celery -A config beat -l info
+
+  worker:
+    <<: *base_py
+    image: worker
+    container_name: worker
+    depends_on:
+      - redis
+    ports: []
+    command: celery -A config worker -l info

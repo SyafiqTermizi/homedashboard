@@ -9,14 +9,40 @@ from .constants import Location, Frequency
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat"
-DATE_FORMAT = "%d-%b-%Y"
+
+
+def get_jakim_date():
+    """
+    Get date format used by Jakim
+    """
+    month_map = {
+        "1": "Jan",
+        "2": "Feb",
+        "3": "Mac",
+        "4": "Apr",
+        "5": "Mei",
+        "6": "Jun",
+        "7": "Jul",
+        "8": "Ogos",
+        "9": "Sep",
+        "10": "Okt",
+        "11": "Nov",
+        "12": "Dis",
+    }
+    today_date = datetime.now()
+    return f"{today_date.day}-{month_map[str(today_date.month)]}-{today_date.year}"
 
 
 def get_prayer_time(location: Location):
     """
     Get prayer time from JAKIM
     """
-    url = f"{BASE_URL}&period={Frequency.WEEK.value}&zone={location.value}"
+    try:
+        _location = location.value
+    except AttributeError:
+        _location = location
+
+    url = f"{BASE_URL}&period={Frequency.WEEK.value}&zone={_location}"
 
     logger.info({"msg": "Retrieving data from JAKIM", "url": url})
 
@@ -34,7 +60,6 @@ def get_prayer_time(location: Location):
             }
         )
 
-    today_date = datetime.now().strftime(DATE_FORMAT)
     data = response.json()["prayerTime"]
 
-    return list(filter(lambda d: d["date"] == today_date, data))[0]
+    return list(filter(lambda d: d["date"] == get_jakim_date(), data))[0]
