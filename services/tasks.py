@@ -23,7 +23,7 @@ def get_weather_forecast(locations: list[str]):
     """
     get_forecast = TodayWeather()
     forecast_data = get_weather_summary(get_forecast(locations=locations))
-    store_result("weather", forecast_data)
+    store_result("weather_forecast", forecast_data)
 
 
 @shared_task

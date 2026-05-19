@@ -32,6 +32,7 @@ ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    "dashboard.apps.DashboardConfig",
     "django.contrib.staticfiles",
 ]
 
@@ -52,7 +53,6 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -73,6 +73,15 @@ USE_I18N = False
 
 USE_TZ = False
 
+REDIS_URL = "redis://redis:6379/0"
+
+# Django cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -80,17 +89,19 @@ USE_TZ = False
 STATIC_URL = "static/"
 
 # Celery Configuration
+_API_TASK_FREQUENCY = 5 * 60  # Every 4 minutes
+
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BROKER_URL = REDIS_URL
 CELERY_BEAT_SCHEDULE = {
     "weather_forecast": {
         "task": "services.tasks.get_weather_forecast",
-        "schedule": 60.0,
+        "schedule": _API_TASK_FREQUENCY,
         "args": (["bangi", "kajang", "nilai"],),
     },
     "train_arrival": {
         "task": "services.tasks.get_train_time",
-        "schedule": 60.0,
+        "schedule": _API_TASK_FREQUENCY,
         "args": (
             {
                 "route_sname": "Seremban Line",
@@ -101,7 +112,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "prayer_time": {
         "task": "services.tasks.get_prayer_time",
-        "schedule": 60.0,
+        "schedule": _API_TASK_FREQUENCY,
         "args": ("WLY01",),
     },
 }
