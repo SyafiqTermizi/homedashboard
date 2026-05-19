@@ -73,7 +73,7 @@ USE_I18N = False
 
 USE_TZ = False
 
-REDIS_URL = "redis://redis:6379/0"
+REDIS_URL = f"redis://:{os.environ['REDIS_PASSWORD']}@redis:6379/0"
 
 # Django cache
 CACHES = {
@@ -89,7 +89,7 @@ CACHES = {
 STATIC_URL = "static/"
 
 # Celery Configuration
-_API_TASK_FREQUENCY = 5 * 60  # Every 4 minutes
+_API_TASK_FREQUENCY = 30 * 60  # Every 30 minutes
 
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_URL = REDIS_URL

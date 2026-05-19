@@ -2,6 +2,7 @@ services:
   redis:
     container_name: redis
     image: redis:8.8-m03-alpine3.23
+    command: redis-server --requirepass ${REDIS_PASSWORD}
 
   web_be: &base_py
     container_name: web_be
