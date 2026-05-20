@@ -1,7 +1,9 @@
 from datetime import datetime
 import json
 import logging
+from random import randint
 
+from django.conf import settings
 from django.core.cache import cache
 from django.shortcuts import render
 from django.utils import timezone
@@ -101,6 +103,10 @@ def format_train_arrival_data(data: dict) -> list[dict]:
 
 
 def dashboard(request):
+    quotes = []
+    with open(settings.BASE_DIR / "dashboard" / "quotes.json") as f:
+        quotes = [*json.load(f)]
+
     raw_weather_data = get_redis_data("weather_forecast")
     raw_prayer_data = get_redis_data("prayer_time")
     raw_arrival_data = get_redis_data("train_arrival")
@@ -110,6 +116,7 @@ def dashboard(request):
         "weather_forecast": format_weather_data(raw_weather_data),
         "train_arrival": format_train_arrival_data(raw_arrival_data),
         "prayer_time": format_prayer_data(raw_prayer_data),
+        "quote": quotes[randint(0, len(quotes) - 1)],
     }
 
     return render(request=request, template_name="dashboard.html", context=context)
