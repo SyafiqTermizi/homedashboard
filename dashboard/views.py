@@ -1,11 +1,14 @@
 from datetime import datetime
+from importlib import import_module
 import json
 import logging
 from random import randint
 
 from django.conf import settings
 from django.core.cache import cache
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 
 logger = logging.getLogger(__name__)
@@ -43,6 +46,9 @@ def get_time_of_day() -> str:
 
 
 def format_weather_data(data: dict) -> dict:
+    if not data:
+        return data
+
     formatted = {"current_forecast": data[get_time_of_day()], **data}
 
     out = {}
@@ -120,3 +126,18 @@ def dashboard(request):
     }
 
     return render(request=request, template_name="dashboard.html", context=context)
+
+
+def refresh_feed(request):
+    if request.method != "POST":
+        return
+
+    for val in settings.CELERY_BEAT_SCHEDULE.values():
+        module_name = ".".join(val["task"].split(".")[:-1])
+        func_name = val["task"].split(".")[-1]
+
+        module = import_module(module_name)
+        func = getattr(module, func_name)
+        func.delay(*val["args"])
+
+    return HttpResponseRedirect(redirect_to=reverse("dashboard:index"))

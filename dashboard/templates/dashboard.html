@@ -9,11 +9,21 @@
 </head>
 <body>
     <div class="container">
-        <div class="row mt-5">
-            <h1 id="time-part">18:88:88</h1>
+        <div class="row mt-5 align-items-center">
+            <div class="col-6">
+                <h1 id="time-part">18:88:88</h1>
                 <p class="text-body-secondary">
                     {{ today_date }}
                 </p>
+            </div>
+            <div class="col-6 text-end">
+                <form action="{% url 'dashboard:refresh' %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-purple">
+                        Refresh
+                    </button>
+                </form>
+            </div>
         </div>
         <div class="row">
             <div class="mt-3 col-lg-4 col-md-12 col-sm-12">
