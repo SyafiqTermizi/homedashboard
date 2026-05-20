@@ -4,7 +4,9 @@
   "description": "1. Get weather forecast 2. Get KTM schedule",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx sass --style compressed static/scss/index.scss static/css/index.css",
+    "compile:watch": "npx sass --watch --style compressed static/scss/index.scss static/css/index.css"
   },
   "repository": {
     "type": "git",
