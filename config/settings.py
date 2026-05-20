@@ -85,9 +85,7 @@ CACHES = {
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Celery Configuration
 _API_TASK_FREQUENCY = 30 * 60  # Every 30 minutes
@@ -104,11 +102,18 @@ CELERY_BEAT_SCHEDULE = {
         "task": "services.tasks.get_train_time",
         "schedule": _API_TASK_FREQUENCY,
         "args": (
-            {
-                "route_sname": "Seremban Line",
-                "stations": ["bangi", "kajang"],
-                "direction": "1",
-            },
+            [
+                {
+                    "route_sname": "Seremban Line",
+                    "stations": ["bangi", "kajang"],
+                    "direction": "1",
+                },
+                {
+                    "route_sname": "Seremban Line",
+                    "stations": ["midvalley"],
+                    "direction": "0",
+                },
+            ],
         ),
     },
     "prayer_time": {

@@ -27,14 +27,16 @@ def get_weather_forecast(locations: list[str]):
 
 
 @shared_task
-def get_train_time(kwargs: dict):
+def get_train_time(data: list[dict]):
     """
     Get train arrival time for given stations and store into redis
     """
     get_train_time = KTMBData()
-    arrival_data = get_train_time(**kwargs)
+    out = {}
+    for kwarg in data:
+        out = out | get_train_time(**kwarg)
 
-    store_result("train_arrival", arrival_data)
+    store_result("train_arrival", out)
 
 
 @shared_task

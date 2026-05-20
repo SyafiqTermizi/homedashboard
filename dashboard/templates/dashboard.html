@@ -8,9 +8,116 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
-    <h1>Hello</h1>
-    <p>{{ weather_forecast }}</p>
-    <p>{{ train_arrival }}</p>
-    <p>{{ prayer_time }}</p>
+    <div class="container">
+        <div class="row mt-5">
+            <h1 id="time-part">18:88:88</h1>
+                <p class="text-body-secondary">
+                    {{ today_date }}
+                </p>
+        </div>
+        <div class="row">
+            <div class="mt-3 col-lg-4 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <h1 class="card-title">
+                                    {{ weather_forecast.current_forecast }}
+                                </h1>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h3 class="card-title">
+                                    {{ weather_forecast.min_temp }} - {{ weather_forecast.max_temp }} °C
+                                </h3>
+                                <p class="card-subtitle text-center">
+                                    <small>Forecasted temp</small>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h6>Morning</h6>
+                                <h2>{{ weather_forecast.morning_forecast }}</h2>
+                            </div>
+                            <div class="col-4">
+                                <h6>Afternoon</h6>
+                                <h2>{{ weather_forecast.afternoon_forecast }}</h2>
+                            </div>
+                            <div class="col-4">
+                                <h6>Night</h3>
+                                <h2>{{ weather_forecast.night_forecast }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 col-lg-8 col-md-12 col-sm-12">
+                <div class="card card-prayer-time">
+                    <div class="card-body text-center">
+                        <div class="row mt-5">
+                            <div class="col-2"><h5>Subuh</h5></div>
+                            <div class="col-2"><h5>Dhuha</h5></div>
+                            <div class="col-2"><h5>Zohor</h5></div>
+                            <div class="col-2"><h5>Asar</h5></div>
+                            <div class="col-2"><h5>Maghrib</h5></div>
+                            <div class="col-2"><h5>Isya</h5></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">{{ prayer_time.fajr }}</div>
+                            <div class="col-2">{{ prayer_time.dhuha }}</div>
+                            <div class="col-2">{{ prayer_time.dhuhr }}</div>
+                            <div class="col-2">{{ prayer_time.asr }}</div>
+                            <div class="col-2">{{ prayer_time.maghrib }}</div>
+                            <div class="col-2">{{ prayer_time.isha }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for station in train_arrival %}
+            <div class="mt-3 col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-train-arrival">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ station.name }}</h3>
+                        <br>
+                        {% for arrival in station.arrival_times %}
+                        <p class="card-text">{{ arrival }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="mt-3 col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-quote">
+                    <div class="card-body row align-items-center">
+                        <h3 class="card-title">
+                            So, surely with hardship comes ease.
+                        </h3>
+                        <p class="card-text">
+                            Surely with ˹that˺ hardship comes ˹more˺ ease.1
+                        </p>
+                        <p>
+                            - <small>Ash-Sharh 94:5-6</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString("en-US", { hour12: true });
+            const timeParts = timeString.toLowerCase().split(" ")[0].split(":");
+            const hourPart = timeParts[0].length === 1 ? "0" + timeParts[0] : timeParts[0];
+            document.getElementById("time-part").innerHTML = `${hourPart}:${timeParts[1]} <small>${timeParts[2]}</small>`;
+        }
+        // Run the function every 1000ms (1 second)
+        setInterval(updateTime, 1000);
+        // Run once immediately so there's no 1-second delay on load
+        updateTime();
+    </script>
 </body>
 </html>
