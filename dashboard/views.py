@@ -136,6 +136,14 @@ def refresh_feed(request):
         module_name = ".".join(val["task"].split(".")[:-1])
         func_name = val["task"].split(".")[-1]
 
+        logger.info(
+            {
+                "msg": "Importing module",
+                "module": module_name,
+                "func": func_name
+            }
+        )
+
         module = import_module(module_name)
         func = getattr(module, func_name)
         func.delay(*val["args"])
