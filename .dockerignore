@@ -5,7 +5,6 @@
 *.pyd
 
 # Local development files
-.env
 db.sqlite3
 .git/
 .gitignore

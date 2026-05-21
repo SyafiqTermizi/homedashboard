@@ -8,10 +8,8 @@ services:
     container_name: web_be
     build:
       context: ../
-      dockerfile: ./compose/Dockerfile
+      dockerfile: ./compose/prod.Dockerfile
     command: gunicorn config.wsgi --bind 0.0.0.0:8000 --chdir=/app
-    volumes:
-      - ../:/app
     env_file:
       - ../.env
     ports:
