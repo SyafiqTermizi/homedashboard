@@ -42,7 +42,7 @@ def get_prayer_time(location: Location):
     except AttributeError:
         _location = location
 
-    url = f"{BASE_URL}&period={Frequency.WEEK.value}&zone={_location}"
+    url = f"{BASE_URL}&period={Frequency.YEAR.value}&zone={_location}"
 
     logger.info({"msg": "Retrieving data from JAKIM", "url": url})
 

@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,10 +50,7 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.messages.context_processors.messages",
-            ],
+            "context_processors": [],
         },
     },
 ]
@@ -88,7 +85,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Celery Configuration
-_API_TASK_FREQUENCY = 30 * 60  # Every 30 minutes
+_API_TASK_FREQUENCY = 2 * 60 * 60  # Every 2 hours
 
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_URL = REDIS_URL
