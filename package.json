@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "npx sass --style compressed static/scss/index.scss static/css/index.css",
-    "compile:watch": "npx sass --watch --style compressed static/scss/index.scss static/css/index.css"
+    "watch": "npx sass --watch --style compressed static/scss/index.scss static/css/index.css"
   },
   "repository": {
     "type": "git",
