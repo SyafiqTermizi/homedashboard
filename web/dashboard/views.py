@@ -49,10 +49,8 @@ def format_weather_data(data: dict) -> dict:
     if not data:
         return data
 
-    formatted = {"current_forecast": data[get_time_of_day()], **data}
-
     out = {}
-    for k, v in formatted.items():
+    for k, v in data.items():
         if not isinstance(v, str):
             out.update({k: v})
             continue
@@ -67,7 +65,7 @@ def format_weather_data(data: dict) -> dict:
         if k == "night_forecast" and v.lower().startswith("tiada hujan"):
             out.update({k: "🌙"})
 
-    return out
+    return {"current_forecast": out[get_time_of_day()], **out}
 
 
 def format_prayer_data(data: dict) -> dict:
