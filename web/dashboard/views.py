@@ -110,7 +110,7 @@ def format_train_arrival_data(data: dict) -> list[dict]:
 
 def dashboard(request):
     quotes = []
-    with open(settings.BASE_DIR / "dashboard" / "quotes.json") as f:
+    with open(settings.BASE_DIR / "web" / "dashboard" / "quotes.json") as f:
         quotes = [*json.load(f)]
 
     raw_weather_data = get_redis_data("weather_forecast")

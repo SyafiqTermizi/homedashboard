@@ -9,7 +9,7 @@ services:
     build:
       context: ../
       dockerfile: ./compose/prod.Dockerfile
-    command: gunicorn config.wsgi --bind 0.0.0.0:8000 --chdir=/app
+    command: gunicorn web.wsgi --bind 0.0.0.0:8000 --chdir=/app
     env_file:
       - ../.env
     ports:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - redis
     ports: []
-    command: celery -A config beat -l info
+    command: celery -A web beat -l info
 
   worker:
     <<: *base_py
@@ -33,4 +33,4 @@ services:
     depends_on:
       - redis
     ports: []
-    command: celery -A config worker -l info
+    command: celery -A web worker -l info

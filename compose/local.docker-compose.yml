@@ -26,7 +26,7 @@ services:
     depends_on:
       - redis
     ports: []
-    command: celery -A config beat -l info
+    command: celery -A web beat -l info
 
   worker:
     <<: *base_py
@@ -35,4 +35,4 @@ services:
     depends_on:
       - redis
     ports: []
-    command: celery -A config worker -l info
+    command: celery -A web worker -l info

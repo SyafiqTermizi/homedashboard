@@ -31,7 +31,7 @@ ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
 
 # Application definition
 INSTALLED_APPS = [
-    "dashboard.apps.DashboardConfig",
+    "web.dashboard.apps.DashboardConfig",
     "django.contrib.staticfiles",
 ]
 
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
+ROOT_URLCONF = "web.urls"
 
 TEMPLATES = [
     {
@@ -56,7 +56,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+WSGI_APPLICATION = "web.wsgi.application"
 
 
 # Internationalization
