@@ -30,7 +30,7 @@ def get_jakim_date():
         "12": "Dis",
     }
     today_date = datetime.now()
-    return f"{today_date.day}-{month_map[str(today_date.month)]}-{today_date.year}"
+    return f"{str(today_date.day).zfill(2)}-{month_map[str(today_date.month)]}-{today_date.year}"
 
 
 def get_prayer_time(location: Location):
@@ -60,6 +60,7 @@ def get_prayer_time(location: Location):
             }
         )
 
-    data = response.json()["prayerTime"]
+    data = response.json()
+    prayer_times = data["prayerTime"]
 
-    return list(filter(lambda d: d["date"] == get_jakim_date(), data))[0]
+    return list(filter(lambda d: d["date"] == get_jakim_date(), prayer_times))[0]
