@@ -23,14 +23,35 @@
 @import "../../node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
 
+$primary-color: #4e73df;
+
 body {
     background-color: #f2f6fc;
 }
 
+.no-margin-row {
+  @extend .row;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.scrollable {
+  /* Hide scrollbar */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+
+/* Chrome, Safari, and Opera */
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
 .btn-purple {
   color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: $primary-color;
+  border-color: $primary-color;
 }
 
 .btn-purple:hover {
@@ -50,23 +71,22 @@ body {
 .btn-purple.disabled,
 .btn-purple:disabled {
   color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: $primary-color;
+  border-color: $primary-color;
 }
 
 .card-prayer-time {
     min-height: 202.2px;
 }
 
-.card-train-arrival {
-    height: 304px;
-    overflow-y: scroll;
+.fixed-height-card {
+  height: 304px;
 }
 
-.card-quote {
-    @extend .card-train-arrival;
-    background-color: #4e73df;
-    background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%);
+.fixed-height-card-primary-bg {
+    @extend .fixed-height-card;
+    background-color: $primary-color;
+    background-image: linear-gradient(180deg,$primary-color 10%,#224abe 100%);
     background-size: cover;
     color: white;
 }
