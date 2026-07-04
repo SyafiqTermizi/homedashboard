@@ -142,3 +142,4 @@ GitHub.sublime-settings
 node_modules
 static/css/*
 static/staticfiles
+static/build/*
