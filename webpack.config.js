@@ -14,20 +14,16 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    // Creates `style` nodes from JS strings
-                    MiniCssExtractPlugin.loader, 
-                    // Translates CSS into CommonJS
+                    MiniCssExtractPlugin.loader,
                     "css-loader",
-                    // Compiles Sass to CSS
                     "sass-loader",
                 ],
             },
         ],
     },
     plugins: [
-        // Extracts the compiled CSS into a standalone file in the output directory
         new MiniCssExtractPlugin({
-          filename: 'css/[name].css', 
+          filename: "css/[name].css", 
         }),
     ]
 };
