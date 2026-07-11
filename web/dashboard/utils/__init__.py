@@ -41,6 +41,15 @@ def get_time_of_day() -> str:
 
 
 def format_weather_data(data: dict) -> dict:
+    """
+    Add 'current_forecast' key
+    """
+    logger.info(
+        {
+            "msg": "Formatting weather data",
+            "raw_data": data,
+        }
+    )
     if not data:
         return data
 
@@ -56,6 +65,10 @@ def format_weather_data(data: dict) -> dict:
             out.update({k: "🌧️"})
         elif v.lower().startswith("ribut"):
             out.update({k: "🌪️"})
+        elif v.lower().startswith("mendung"):
+            out.update({k: "🌦️"})
+        else:
+            out.update({k: v})
 
         if k == "night_forecast" and v.lower().startswith("tiada hujan"):
             out.update({k: "🌙"})
